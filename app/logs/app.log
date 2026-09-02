@@ -1,0 +1,38 @@
+2026-09-02 11:52:37,024 - app.core.logger - ERROR Class 'app.schemas.user_schema.UserCreate' is not mapped
+2026-09-02 11:54:06,112 - app.core.logger - ERROR (psycopg2.errors.UndefinedTable) relation "user" does not exist
+LINE 1: INSERT INTO "user" (username, password, email) VALUES ('Nain...
+                    ^
+
+[SQL: INSERT INTO "user" (username, password, email) VALUES (%(username)s, %(password)s, %(email)s)]
+[parameters: {'username': 'Naing', 'password': '23rf3', 'email': 'ktyndfs@gmail.com'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-02 11:56:44,330 - app.core.logger - ERROR (psycopg2.errors.UndefinedTable) relation "user" does not exist
+LINE 1: INSERT INTO "user" (username, password, email) VALUES ('Nain...
+                    ^
+
+[SQL: INSERT INTO "user" (username, password, email) VALUES (%(username)s, %(password)s, %(email)s) RETURNING "user".id]
+[parameters: {'username': 'Naing', 'password': '23rf3', 'email': 'ktyndfs@gmail.com'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-02 11:57:05,373 - app.core.logger - ERROR (psycopg2.errors.UndefinedTable) relation "user" does not exist
+LINE 1: INSERT INTO "user" (username, password, email) VALUES ('Nain...
+                    ^
+
+[SQL: INSERT INTO "user" (username, password, email) VALUES (%(username)s, %(password)s, %(email)s) RETURNING "user".user_id]
+[parameters: {'username': 'Naing', 'password': '23rf3', 'email': 'ktyndfs@gmail.com'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-02 11:57:09,340 - app.core.logger - ERROR (psycopg2.errors.UndefinedTable) relation "user" does not exist
+LINE 1: INSERT INTO "user" (username, password, email) VALUES ('Nain...
+                    ^
+
+[SQL: INSERT INTO "user" (username, password, email) VALUES (%(username)s, %(password)s, %(email)s) RETURNING "user".user_id]
+[parameters: {'username': 'Naing', 'password': '23rf3', 'email': 'ktyndfs@gmail.com'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-02 11:58:16,314 - app.core.logger - ERROR (psycopg2.errors.UndefinedColumn) column "password" of relation "users" does not exist
+LINE 1: INSERT INTO users (username, password, email) VALUES ('Naing...
+                                     ^
+
+[SQL: INSERT INTO users (username, password, email) VALUES (%(username)s, %(password)s, %(email)s) RETURNING users.user_id]
+[parameters: {'username': 'Naing', 'password': '23rf3', 'email': 'ktyndfs@gmail.com'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-02 18:04:47,212 - app.core.logger - ERROR No row was found when one was required
+2026-09-02 18:05:12,157 - app.core.logger - ERROR Class 'app.schemas.user_schema.UserDB' is not mapped
