@@ -1,5 +1,5 @@
 from app.core.config import setting
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from sqlalchemy import create_engine
 from app.core.logger import logger
 from sqlalchemy import exc
@@ -10,7 +10,8 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autoflush=False,
                             autocommit=False,
                             bind=engine)
-
+class Base(DeclarativeBase):
+    ...
 
 def get_session():
     session = None
