@@ -1,10 +1,8 @@
 from sqlalchemy import ForeignKey, String, Integer, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 import uuid
+from app.core.database import Base
 
-class Base(DeclarativeBase):
-    ...
-    
 class User(Base):
     __tablename__ = "users"
     
