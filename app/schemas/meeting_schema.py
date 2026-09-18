@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date
 from enum import Enum
 
 class Level(Enum):
@@ -7,13 +7,14 @@ class Level(Enum):
     medium = 2
     high = 3
 
+class MeetingCandidate(BaseModel):
+    ...
+
 class MeetingProposal(BaseModel):
     '''Request to meeting'''
-    user_id: str
-    meeting_id: str
     participants: list[str]
-    acceptable_last_date: datetime
-    importance: Level = Level.low
-    urgency : Level = Level.low
-    candidate: list[Candidate] = []
+    meeting_date: date
+    meeting_duration: float = 1.00
+    candidate: list[MeetingCandidate] = []
     state: bool | None = None
+    

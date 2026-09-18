@@ -10,8 +10,10 @@ create table tasks(
     user_id UUID not null,
     task_id UUID default gen_random_uuid(),
     title varchar(255) not null,
-    deadline date not null,
+    start_date date not null,
+    start_time time not null,
     duration numeric(4, 2) not null,
+    participants varchar(255),
     foreign key (user_id)
     references users(user_id)
 );

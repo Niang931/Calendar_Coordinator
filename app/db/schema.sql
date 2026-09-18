@@ -36,8 +36,10 @@ CREATE TABLE public.tasks (
     user_id uuid NOT NULL,
     task_id uuid DEFAULT gen_random_uuid(),
     title character varying(255) NOT NULL,
-    deadline date NOT NULL,
-    duration numeric(4,2) NOT NULL
+    start_date date NOT NULL,
+    start_time time without time zone NOT NULL,
+    duration numeric(4,2) NOT NULL,
+    participants character varying(255)
 );
 
 
