@@ -20,6 +20,17 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: association_table; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.association_table (
+    task_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    role character varying(255) NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -34,12 +45,11 @@ CREATE TABLE public.schema_migrations (
 
 CREATE TABLE public.tasks (
     user_id uuid NOT NULL,
-    task_id uuid DEFAULT gen_random_uuid(),
+    task_id uuid DEFAULT gen_random_uuid() NOT NULL,
     title character varying(255) NOT NULL,
     start_date date NOT NULL,
     start_time time without time zone NOT NULL,
-    duration numeric(4,2) NOT NULL,
-    participants character varying(255)
+    duration numeric(4,2) NOT NULL
 );
 
 
@@ -64,6 +74,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks
+    ADD CONSTRAINT tasks_pkey PRIMARY KEY (task_id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -77,6 +95,22 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: association_table association_table_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.association_table
+    ADD CONSTRAINT association_table_task_id_fkey FOREIGN KEY (task_id) REFERENCES public.tasks(task_id);
+
+
+--
+-- Name: association_table association_table_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.association_table
+    ADD CONSTRAINT association_table_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
 
 
 --

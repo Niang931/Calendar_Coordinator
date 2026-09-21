@@ -2,6 +2,7 @@ from sqlalchemy import ForeignKey, String, Integer, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 import uuid
 from app.core.database import Base
+from app.models.task_model import Association
 
 class User(Base):
     __tablename__ = "users"
@@ -11,4 +12,4 @@ class User(Base):
     username: Mapped[str] = mapped_column()
     hashed_password: Mapped[str] = mapped_column()
     email: Mapped[str] = mapped_column()
-    
+    task_links: Mapped[list["Association"]] = relationship(back_populates="user")

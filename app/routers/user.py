@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from app.schemas.user_schema import UserCreate, UserBase, UserDB, Token
 from app.core.database import get_session
 from app.core.logger import logger
-from app.internal.user import get_user_id_by_username, add_user
+from app.internal.user import add_user, get_user_by_username
 from app.core.utils import verify_password, hash_password
 from app.core._jwt import create_access_token
 
@@ -17,7 +17,7 @@ async def register_user(user: UserCreate,
                         session=Depends(get_session)):
     username, password = user.username, user.password
     try:
-        username_exist = get_user_id_by_username(username, session)
+        username_exist = get_user_by_username(username, session)
         if username_exist:
             raise HTTPException(status_code=403,
                                 detail="Username already taken. Please take a different one")

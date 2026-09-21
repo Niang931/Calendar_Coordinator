@@ -8,8 +8,7 @@ class Task(BaseModel):
     start_date: date
     start_time: time
     duration: float = 1.00
-    participants : list[str] =[]
-
+    
 class TaskDB(Task):
     user_id: uuid.UUID
     task_id: uuid.UUID
