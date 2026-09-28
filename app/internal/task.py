@@ -2,13 +2,17 @@ import uuid
 from datetime import date, time
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from app.models.task_model import Task
+from app.models.task_model import Task, User_Schedule
 
 def filter_task(user_id: uuid.UUID, 
                 session: Session,
                 title: str = None,
                 start_date: date = None)-> list[Task]:
-    statement = select(Task).where(Task.user_id==user_id)
+    statement = select(Task).where(
+    Task.task_id.in_(
+        select(User_Schedule.task_id).where(User_Schedule.user_id == user_id)
+    )
+)
     if title:
         statement = statement.where(Task.title==title)
     if start_date:
@@ -23,10 +27,12 @@ def add_task(task: Task,
     taskdb = Task(title=task.title,
                     start_date=task.start_date,
                     start_time=task.start_time,
-                    duration=task.duration,
-                    user_id=user_id)
+                    duration=task.duration)
+    use_schedule = User_Schedule(user_id=user_id, task=taskdb)
     session.add(taskdb)
+    return use_schedule
     
+
 def modify_task(task_to_update: Task, 
                 session: Session,
                 new_title: str = None,

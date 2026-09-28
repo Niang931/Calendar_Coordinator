@@ -38,7 +38,8 @@ async def create_task(task: Task,
                       session=Depends(get_session)):
     '''Add new task by the user id'''
     try:
-        add_task(task, user_id, session)
+        user_schedule = add_task(task, user_id, session)
+        session.add(user_schedule)
         return 
     except exc.DataError as e:
         logger.error(e)
