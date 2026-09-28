@@ -36,3 +36,178 @@ LINE 1: INSERT INTO users (username, password, email) VALUES ('Naing...
 (Background on this error at: https://sqlalche.me/e/20/f405)
 2026-09-02 18:04:47,212 - app.core.logger - ERROR No row was found when one was required
 2026-09-02 18:05:12,157 - app.core.logger - ERROR Class 'app.schemas.user_schema.UserDB' is not mapped
+2026-09-03 14:20:08,227 - app.core.logger - ERROR Class 'app.schemas.task_schema.TaskDB' is not mapped
+2026-09-03 14:23:52,202 - app.core.logger - ERROR Foreign key associated with column 'tasks.user_id' could not find table 'users' with which to generate a foreign key to target column 'user_id'
+2026-09-22 15:02:14,437 - app.core.logger - ERROR Mapper 'Mapper[User_schedule(user_schedule)]' has no property 'user'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-22 15:02:56,631 - app.core.logger - ERROR One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[User(users)]'. Original exception was: Mapper 'Mapper[User_schedule(user_schedule)]' has no property 'user'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-22 15:07:26,819 - app.core.logger - ERROR (psycopg2.errors.UndefinedColumn) column "user_id" of relation "groups" does not exist
+LINE 1: ...NSERT INTO groups (group_name, group_description, user_id) V...
+                                                             ^
+
+[SQL: INSERT INTO groups (group_name, group_description, user_id) VALUES (%(group_name)s, %(group_description)s, %(user_id)s::UUID) RETURNING groups.group_id]
+[parameters: {'group_name': 'string', 'group_description': 'string', 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-22 15:10:10,551 - app.core.logger - ERROR (psycopg2.errors.UndefinedColumn) column "user_id" of relation "groups" does not exist
+LINE 1: ...NSERT INTO groups (group_name, group_description, user_id) V...
+                                                             ^
+
+[SQL: INSERT INTO groups (group_name, group_description, user_id) VALUES (%(group_name)s, %(group_description)s, %(user_id)s::UUID) RETURNING groups.group_id]
+[parameters: {'group_name': 'string', 'group_description': 'string', 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-22 18:37:36,937 - app.core.logger - ERROR (psycopg2.ProgrammingError) can't adapt type 'ScalarResult'
+[SQL: SELECT users.user_id 
+FROM users 
+WHERE users.username = %(username_1)s]
+[parameters: {'username_1': <sqlalchemy.engine.result.ScalarResult object at 0x108b35770>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-22 18:41:44,202 - app.core.logger - ERROR Multiple rows were found when exactly one was required
+2026-09-22 19:42:04,099 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "task_id" of relation "user_meeting" violates not-null constraint
+DETAIL:  Failing row contains (a9580bbb-aba6-42da-8adf-7d1bf12d2f9c, d9757e7a-3f10-4096-84ac-6a1d3f1b0c10, null, 9a7919b0-252b-49bb-969c-73fb4ab71efe, null, f).
+
+[SQL: INSERT INTO user_meeting (user_id, group_id) VALUES (%(user_id)s::UUID, %(group_id)s::UUID) RETURNING user_meeting.um_id, user_meeting.task_id, user_meeting.resolved]
+[parameters: {'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10'), 'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe')}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-22 19:43:12,716 - app.core.logger - ERROR (builtins.TypeError) Object of type datetime is not JSON serializable
+[SQL: INSERT INTO user_meeting (user_id, group_id, options) VALUES (%(user_id)s::UUID, %(group_id)s::UUID, %(options)s::JSON) RETURNING user_meeting.um_id, user_meeting.task_id, user_meeting.resolved]
+[parameters: [{'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'options': [(datetime.datetime(2026, 9, 22, 6, 0), datetime.datetime(2026, 9, 22, 7, 0)), ( ... (1281 characters truncated) ... etime(2026, 9, 22, 20, 41, 26, 400000), datetime.datetime(2026, 9, 22, 21, 41, 26, 400000))], 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10')}, {'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'options': [(datetime.datetime(2026, 9, 22, 6, 0), datetime.datetime(2026, 9, 22, 7, 0)), ( ... (1281 characters truncated) ... etime(2026, 9, 22, 20, 41, 26, 400000), datetime.datetime(2026, 9, 22, 21, 41, 26, 400000))], 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10')}]]
+2026-09-23 13:15:55,614 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "task_id" of relation "user_meeting" violates not-null constraint
+DETAIL:  Failing row contains (a38dfbb1-a545-451a-b951-a857428432fe, d9757e7a-3f10-4096-84ac-6a1d3f1b0c10, null, 9a7919b0-252b-49bb-969c-73fb4ab71efe, [], f).
+
+[SQL: INSERT INTO user_meeting (user_id, group_id, options) VALUES (%(user_id)s::UUID, %(group_id)s::UUID, %(options)s::JSON) RETURNING user_meeting.um_id, user_meeting.task_id, user_meeting.resolved]
+[parameters: {'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10'), 'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'options': '[]'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-23 13:19:39,496 - app.core.logger - ERROR (psycopg2.errors.ForeignKeyViolation) insert or update on table "user_meeting" violates foreign key constraint "user_meeting_task_id_fkey"
+DETAIL:  Key (task_id)=(efff98aa-7d2d-4029-bfad-04c4db0b7944) is not present in table "tasks".
+
+[SQL: INSERT INTO user_meeting (user_id, group_id, options) VALUES (%(user_id)s::UUID, %(group_id)s::UUID, %(options)s::JSON) RETURNING user_meeting.um_id, user_meeting.task_id, user_meeting.resolved]
+[parameters: {'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10'), 'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'options': '[]'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-23 16:37:03,927 - app.core.logger - ERROR (builtins.TypeError) Object of type datetime is not JSON serializable
+[SQL: INSERT INTO user_meeting (user_id, group_id, options) VALUES (%(user_id)s::UUID, %(group_id)s::UUID, %(options)s::JSON) RETURNING user_meeting.um_id, user_meeting.task_id, user_meeting.resolved]
+[parameters: [{'options': [(datetime.datetime(2026, 9, 22, 6, 0), datetime.datetime(2026, 9, 22, 7, 0)), (datetime.datetime(2026, 9, 22, 8, 41, 26, 400000), datetim ... (1281 characters truncated) ... 2026, 9, 22, 21, 41, 26, 400000))], 'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10')}, {'options': [(datetime.datetime(2026, 9, 22, 6, 0), datetime.datetime(2026, 9, 22, 7, 0)), (datetime.datetime(2026, 9, 22, 8, 41, 26, 400000), datetim ... (1281 characters truncated) ... 2026, 9, 22, 21, 41, 26, 400000))], 'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10')}]]
+2026-09-24 10:21:34,100 - app.core.logger - ERROR No row was found when one was required
+2026-09-24 11:29:43,614 - app.core.logger - ERROR (builtins.TypeError) Object of type time is not JSON serializable
+[SQL: INSERT INTO user_meeting (user_id, group_id, options) VALUES (%(user_id)s::UUID, %(group_id)s::UUID, %(options)s::JSON) RETURNING user_meeting.um_id, user_meeting.task_id, user_meeting.resolved]
+[parameters: [{'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'user_id': UUID('e206043e-269c-42cf-9aa4-490e30411040'), 'options': datetime.time(3, 29, 8, 560000, tzinfo=TzInfo(0))}, {'group_id': UUID('9a7919b0-252b-49bb-969c-73fb4ab71efe'), 'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10'), 'options': datetime.time(3, 29, 8, 560000, tzinfo=TzInfo(0))}]]
+2026-09-24 15:40:23,020 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (909dc305-fb6d-4912-9153-b240adc0cdb2, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string'}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:42:09,717 - app.core.logger - ERROR Foreign key associated with column 'options.proposal_id' could not find table 'meeting_proposal' with which to generate a foreign key to target column 'proposal_id'
+2026-09-24 15:42:53,723 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (efeb0ef5-1b11-4a0c-9e02-c6d01240c8b8, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:49:07,226 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (12a36f3e-d3df-49d1-9904-6a378d00e007, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:49:21,741 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (f4ab02d5-4b58-43be-9957-cf834339324d, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:49:51,432 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (1e0d5484-b90e-42c1-b3f9-34d1ab6fade7, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:51:17,174 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (df646b95-8efb-487a-a784-503e4e941752, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:52:25,710 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (ac279701-ab1f-4198-9d6c-9c1852a6b44c, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 15:57:27,900 - app.core.logger - ERROR Mapper 'Mapper[Option(options)]' has no property 'meeting_proposals'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-24 15:58:05,676 - app.core.logger - ERROR Mapper 'Mapper[Option(options)]' has no property 'meeting_proposal'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-24 16:00:24,666 - app.core.logger - ERROR Mapper 'Mapper[Option(options)]' has no property 'meeting_proposal'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-24 16:00:47,598 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (f3cd4618-dfd6-45bc-9e53-6890bb033ba7, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 16:00:57,175 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (6b1c216a-ba59-41dd-9f00-9abed9ff2c56, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 16:01:29,738 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (7f6ff9dd-c447-4621-b87e-45169a3502ec, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-24 16:01:35,045 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (ba1f55c9-5585-497b-9e83-db9903a4a9ba, null, 2026-09-24, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 24), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-25 10:35:10,859 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "group_id" of relation "meeting_proposals" violates not-null constraint
+DETAIL:  Failing row contains (96948735-78ea-4a53-a994-9d787ad60d60, string, null).
+
+[SQL: INSERT INTO meeting_proposals (title, group_id) VALUES (%(title)s, %(group_id)s::UUID) RETURNING meeting_proposals.proposal_id]
+[parameters: {'title': 'string', 'group_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-26 13:24:14,731 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "proposal_id" of relation "options" violates not-null constraint
+DETAIL:  Failing row contains (d861c957-2b09-42fd-8217-c58bceccb85b, null, 2026-09-26, 07:00:00, 1.00, string).
+
+[SQL: INSERT INTO options (start_date, start_time, meeting_duration, description, proposal_id) VALUES (%(start_date)s, %(start_time)s, %(meeting_duration)s, %(description)s, %(proposal_id)s::UUID) RETURNING options.option_id]
+[parameters: {'start_date': datetime.date(2026, 9, 26), 'start_time': datetime.time(7, 0), 'meeting_duration': 1.0, 'description': 'string', 'proposal_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-26 14:49:53,325 - app.core.logger - ERROR (psycopg2.errors.UndefinedColumn) column "user_id" of relation "tasks" does not exist
+LINE 1: ...O tasks (title, start_date, start_time, duration, user_id) V...
+                                                             ^
+
+[SQL: INSERT INTO tasks (title, start_date, start_time, duration, user_id) VALUES (%(title)s, %(start_date)s, %(start_time)s, %(duration)s, %(user_id)s::UUID) RETURNING tasks.task_id]
+[parameters: {'title': 'string', 'start_date': datetime.date(2026, 9, 26), 'start_time': datetime.time(6, 49, 51, 922000, tzinfo=TzInfo(0)), 'duration': 1.0, 'user_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-26 14:50:23,610 - app.core.logger - ERROR (psycopg2.errors.NotNullViolation) null value in column "task_id" of relation "user_schedule" violates not-null constraint
+DETAIL:  Failing row contains (bcac19f2-1996-4a44-8281-0a1cf39a3d44, null, d9757e7a-3f10-4096-84ac-6a1d3f1b0c10, 2026-09-26).
+
+[SQL: INSERT INTO user_schedule (user_id, task_id) VALUES (%(user_id)s::UUID, %(task_id)s::UUID) RETURNING user_schedule.us_id, user_schedule.created_at]
+[parameters: {'user_id': UUID('d9757e7a-3f10-4096-84ac-6a1d3f1b0c10'), 'task_id': None}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-09-26 14:54:25,115 - app.core.logger - ERROR Mapper 'Mapper[Task(tasks)]' has no property 'user_schedule'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-26 14:54:55,321 - app.core.logger - ERROR Mapper 'Mapper[Task(tasks)]' has no property 'user_schedule'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+2026-09-28 09:46:35,330 - app.core.logger - ERROR (psycopg2.errors.GroupingError) column "options.option_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT options.option_id AS options_option_id, options.start...
+               ^
+
+[SQL: SELECT options.option_id AS options_option_id, options.start_date AS options_start_date, options.start_time AS options_start_time, options.meeting_duration AS options_meeting_duration, options.description AS options_description, options.proposal_id AS options_proposal_id, count(options.option_id) AS count_1 
+FROM options GROUP BY options.proposal_id = %(proposal_id_1)s::UUID]
+[parameters: {'proposal_id_1': UUID('9c0b1287-a924-4273-84e8-c93783edfeab')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-28 10:36:12,552 - app.core.logger - ERROR (psycopg2.errors.GroupingError) column "options.option_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT options.option_id AS options_option_id, options.start...
+               ^
+
+[SQL: SELECT options.option_id AS options_option_id, options.start_date AS options_start_date, options.start_time AS options_start_time, options.meeting_duration AS options_meeting_duration, options.description AS options_description, options.proposal_id AS options_proposal_id, count(options.option_id) AS count_1 
+FROM options GROUP BY options.proposal_id = %(proposal_id_1)s::UUID]
+[parameters: {'proposal_id_1': UUID('9c0b1287-a924-4273-84e8-c93783edfeab')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2026-09-28 10:38:16,662 - app.core.logger - ERROR (psycopg2.errors.GroupingError) column "options.option_id" must appear in the GROUP BY clause or be used in an aggregate function
+LINE 1: SELECT options.option_id AS options_option_id, options.start...
+               ^
+
+[SQL: SELECT options.option_id AS options_option_id, options.start_date AS options_start_date, options.start_time AS options_start_time, options.meeting_duration AS options_meeting_duration, options.description AS options_description, options.proposal_id AS options_proposal_id, count(options.option_id) AS count_1 
+FROM options 
+WHERE options.proposal_id = %(proposal_id_1)s::UUID]
+[parameters: {'proposal_id_1': UUID('9c0b1287-a924-4273-84e8-c93783edfeab')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)

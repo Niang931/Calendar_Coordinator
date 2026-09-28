@@ -1,7 +1,8 @@
+import uuid
 from sqlalchemy import ForeignKey, text
 from sqlalchemy.orm import  Mapped, relationship, mapped_column
-from datetime import date, time
-import uuid
+from datetime import date, time, datetime
+from sqlalchemy import JSON
 from app.core.database import Base
 
     
@@ -14,21 +15,35 @@ class Task(Base):
     start_date : Mapped[date] = mapped_column()
     start_time: Mapped[time] = mapped_column()
     duration : Mapped[float] = mapped_column()
-    user_id : Mapped[uuid.UUID] = mapped_column(ForeignKey('users.user_id', ondelete='CASCADE'),
-                                                nullable=False)
-    participants: Mapped[list["Association"]] = relationship(back_populates="task")
+    user_schedules = relationship(
+        'User_Schedule',
+        back_populates="task",
+        cascade='all, delete-orphan'
+    )
 
-class Association(Base):
+
+class User_Schedule(Base):
     
-    __tablename__ = 'association_table'
+    __tablename__ = 'user_schedule'
+    us_id : Mapped[uuid.UUID] = mapped_column(primary_key=True,
+                                              server_default=text('gen_random_uuid()'))
     user_id : Mapped[uuid.UUID] = mapped_column(ForeignKey('users.user_id',
                                                            ondelete='CASCADE'),
-                                                nullable=False,
-                                                primary_key=True)
+                                                nullable=False)
     task_id : Mapped[uuid.UUID] = mapped_column(ForeignKey('tasks.task_id',
                                                            ondelete='CASCADE'),
-                                                nullable=False,
-                                                primary_key=True)
-    role : Mapped[str] = mapped_column()
-    task: Mapped[list["Task"]] = relationship(back_populates="participants")
-    user: Mapped["User"] = relationship(back_populates="task_links")
+                                                nullable=False)
+    created_at: Mapped[date] = mapped_column(server_default=text('current_date')) 
+    task = relationship(
+        "Task",
+        back_populates='user_schedules'
+    )
+    user = relationship(
+        'User',
+        back_populates='user_schedules'
+    )
+
+    
+
+
+    
