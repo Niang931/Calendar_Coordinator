@@ -28,6 +28,10 @@ create table association_table(
 );
 
 -- migrate:down
-drop table if EXISTS association_table
+drop table if exists user_meeting;
+drop table if exists user_schedule;
+drop table if exists user_group;
+drop table if EXISTS association_table;
+drop table if exists groups;
 drop table if EXISTS tasks;
 drop table if EXISTS users;

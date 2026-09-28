@@ -3,7 +3,7 @@ from pwdlib.hashers.argon2 import Argon2Hasher
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from app.core._jwt import decode_access_token
-from app.internal.user import get_user_by_id
+from app.internal.user import get_user
 from app.core.database import get_session
 
 pwd_context = PasswordHash((Argon2Hasher(),))
@@ -34,7 +34,7 @@ def get_current_user(
 ):
     user_id = decode_access_token(token)
 
-    user = get_user_by_id(user_id, session)
+    user = get_user(user_id=user_id, session=session)
 
     if user is None:
         raise HTTPException(
