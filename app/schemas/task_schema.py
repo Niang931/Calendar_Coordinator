@@ -1,13 +1,14 @@
 from pydantic import BaseModel
-from datetime import datetime, date
+from datetime import date, time
 import uuid
 
 class Task(BaseModel):
     '''task with explicit timing and duration (class/ meeting)'''
     title: str
-    deadline: datetime | date
+    start_date: date
+    start_time: time
     duration: float = 1.00
-
+    
 class TaskDB(Task):
     user_id: uuid.UUID
     task_id: uuid.UUID

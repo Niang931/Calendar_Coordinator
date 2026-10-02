@@ -15,9 +15,55 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: event_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.event_type AS ENUM (
+    'schedule',
+    'vote'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.groups (
+    group_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    group_name character varying(255) NOT NULL,
+    group_description character varying(255)
+);
+
+
+--
+-- Name: meeting_proposals; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.meeting_proposals (
+    proposal_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title character varying(255) NOT NULL,
+    group_id uuid NOT NULL
+);
+
+
+--
+-- Name: options; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.options (
+    option_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    proposal_id uuid NOT NULL,
+    start_date date NOT NULL,
+    start_time time without time zone NOT NULL,
+    meeting_duration numeric(4,2) NOT NULL,
+    description character varying(255)
+);
+
 
 --
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
@@ -33,11 +79,36 @@ CREATE TABLE public.schema_migrations (
 --
 
 CREATE TABLE public.tasks (
-    user_id uuid NOT NULL,
-    task_id uuid DEFAULT gen_random_uuid(),
+    task_id uuid DEFAULT gen_random_uuid() NOT NULL,
     title character varying(255) NOT NULL,
-    deadline date NOT NULL,
-    duration numeric(4,2) NOT NULL
+    start_date date NOT NULL,
+    start_time time without time zone NOT NULL,
+    duration numeric(4,2) NOT NULL,
+    occurence_type public.event_type DEFAULT 'vote'::public.event_type
+);
+
+
+--
+-- Name: user_group; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_group (
+    ug_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    group_id uuid NOT NULL,
+    added_at date DEFAULT CURRENT_DATE
+);
+
+
+--
+-- Name: user_schedule; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_schedule (
+    us_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    task_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at date DEFAULT CURRENT_DATE
 );
 
 
@@ -47,10 +118,45 @@ CREATE TABLE public.tasks (
 
 CREATE TABLE public.users (
     user_id uuid DEFAULT gen_random_uuid() NOT NULL,
-    username character varying(255),
+    username character varying(255) NOT NULL,
     hashed_password character varying(255) NOT NULL,
     email character varying(255) NOT NULL
 );
+
+
+--
+-- Name: votes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.votes (
+    vote_id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    option_id uuid NOT NULL
+);
+
+
+--
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (group_id);
+
+
+--
+-- Name: meeting_proposals meeting_proposals_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.meeting_proposals
+    ADD CONSTRAINT meeting_proposals_pkey PRIMARY KEY (proposal_id);
+
+
+--
+-- Name: options options_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.options
+    ADD CONSTRAINT options_pkey PRIMARY KEY (option_id);
 
 
 --
@@ -62,6 +168,30 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tasks
+    ADD CONSTRAINT tasks_pkey PRIMARY KEY (task_id);
+
+
+--
+-- Name: user_group user_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_group
+    ADD CONSTRAINT user_group_pkey PRIMARY KEY (ug_id);
+
+
+--
+-- Name: user_schedule user_schedule_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_schedule
+    ADD CONSTRAINT user_schedule_pkey PRIMARY KEY (us_id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -70,19 +200,75 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: votes votes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_username_key UNIQUE (username);
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_pkey PRIMARY KEY (vote_id);
 
 
 --
--- Name: tasks tasks_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: meeting_proposals meeting_proposals_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.tasks
-    ADD CONSTRAINT tasks_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+ALTER TABLE ONLY public.meeting_proposals
+    ADD CONSTRAINT meeting_proposals_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(group_id);
+
+
+--
+-- Name: options options_proposal_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.options
+    ADD CONSTRAINT options_proposal_id_fkey FOREIGN KEY (proposal_id) REFERENCES public.meeting_proposals(proposal_id);
+
+
+--
+-- Name: user_group user_group_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_group
+    ADD CONSTRAINT user_group_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(group_id);
+
+
+--
+-- Name: user_group user_group_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_group
+    ADD CONSTRAINT user_group_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: user_schedule user_schedule_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_schedule
+    ADD CONSTRAINT user_schedule_task_id_fkey FOREIGN KEY (task_id) REFERENCES public.tasks(task_id);
+
+
+--
+-- Name: user_schedule user_schedule_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_schedule
+    ADD CONSTRAINT user_schedule_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: votes votes_option_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_option_id_fkey FOREIGN KEY (option_id) REFERENCES public.options(option_id);
+
+
+--
+-- Name: votes votes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
 
 
 --
@@ -97,4 +283,6 @@ ALTER TABLE ONLY public.tasks
 --
 
 INSERT INTO public.schema_migrations (version) VALUES
-    ('20260902025223');
+    ('20260902025223'),
+    ('20260921084435'),
+    ('20260924064350');

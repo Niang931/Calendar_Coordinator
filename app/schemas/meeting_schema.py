@@ -1,19 +1,23 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date, time
 from enum import Enum
+from typing import Optional
 
 class Level(Enum):
     low = 1
     medium = 2
     high = 3
 
-class MeetingProposal(BaseModel):
+
+class TimeSlotCheck(BaseModel):
     '''Request to meeting'''
-    user_id: str
-    meeting_id: str
-    participants: list[str]
-    acceptable_last_date: datetime
-    importance: Level = Level.low
-    urgency : Level = Level.low
-    candidate: list[Candidate] = []
-    state: bool | None = None
+    group_name: str
+    meeting_date: date
+    meeting_duration: float = 1.00
+    
+class TimeSlotProposal(TimeSlotCheck):
+    title: str
+    meeting_time: time
+    reason: Optional[str]
+    
+    

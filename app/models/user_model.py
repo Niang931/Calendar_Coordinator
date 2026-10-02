@@ -11,4 +11,8 @@ class User(Base):
     username: Mapped[str] = mapped_column()
     hashed_password: Mapped[str] = mapped_column()
     email: Mapped[str] = mapped_column()
-    
+    user_schedules = relationship(
+        'User_Schedule',
+        back_populates='user',
+        cascade='all, delete-orphan'
+    )

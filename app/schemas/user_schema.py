@@ -19,3 +19,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str
+    
+class GroupCreate(BaseModel):
+    group_name: str
+    group_description: str
